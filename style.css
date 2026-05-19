@@ -201,3 +201,85 @@ input:focus {
     transform: scale(1.1);
     transition: all 0.15s ease-in-out;
 }
+
+@media (max-width: 768px) {
+
+  body {
+    overflow-x: hidden;
+  }
+
+  .login-container,
+  .container,
+  .profile-card,
+  .filters-card,
+  .table-container {
+    width: 92%;
+    max-width: 92%;
+    margin: 20px auto;
+  }
+
+  .navbar {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+    padding: 15px;
+  }
+
+  .app-layout {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+  }
+
+  .sidebar-menu {
+    display: flex;
+    overflow-x: auto;
+    gap: 10px;
+  }
+
+  .menu-link {
+    min-width: 180px;
+    white-space: nowrap;
+  }
+
+  .main-workspace {
+    width: 100%;
+    padding: 15px;
+  }
+
+  .filters-card {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+
+  .filter-group {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .asistencia-table {
+    min-width: 700px;
+  }
+
+  .table-container {
+    overflow-x: auto;
+  }
+
+  .video-box {
+    width: 100%;
+    max-width: 340px;
+    margin: auto;
+  }
+
+  video {
+    width: 100%;
+  }
+
+  .btn-login,
+  .btn-verify,
+  .btn-consultar {
+    width: 100%;
+  }
+}
