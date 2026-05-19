@@ -1,0 +1,203 @@
+/* --- CONFIGURACIÓN DE VARIABLES GENERALES DE LA UMG --- */
+:root {
+    --bg-gradient: linear-gradient(135deg, #001226 0%, #002344 50%, #0d3866 100%);
+    --umg-blue: #002344;
+    --umg-gold: #c59d5f;
+    --umg-gold-hover: #b3894b;
+    --text-white: #ffffff;
+    --text-muted: #a0aec0;
+    --glass-bg: rgba(255, 255, 255, 0.04);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --input-focus: #4299e1;
+}
+
+/* --- RESETEO Y FONDO GENERAL FLUIDO --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    background: var(--bg-gradient);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    padding: 20px;
+}
+
+/* --- TARJETA TRANS LÚCIDA ESTILO PREMIUM (GLASSMORPHISM) --- */
+.login-container {
+    width: 100%;
+    max-width: 420px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 40px 30px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    animation: fadeIn 0.6s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- LOGO Y ENCABEZADOS --- */
+.login-header {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.logo {
+    width: 85px;
+    height: auto;
+    margin-bottom: 15px;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+    transition: transform 0.3s ease;
+}
+
+.logo:hover {
+    transform: scale(1.05) rotate(3deg);
+}
+
+h2 {
+    color: var(--text-white);
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+}
+
+.subtitle {
+    color: var(--umg-gold);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+/* --- FORMULARIOS E INPUTS ESTILIZADOS --- */
+.form-group {
+    margin-bottom: 22px;
+}
+
+label {
+    display: block;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon {
+    position: absolute;
+    left: 14px;
+    font-size: 1rem;
+    opacity: 0.7;
+    user-select: none;
+}
+
+input {
+    width: 100%;
+    padding: 14px 14px 14px 42px;
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: var(--text-white);
+    font-size: 0.95rem;
+    outline: none;
+    transition: all 0.25s ease-in-out;
+}
+
+input::placeholder {
+    color: rgba(255, 255, 255, 0.25);
+}
+
+input:hover {
+    border-color: rgba(255, 255, 255, 0.2);
+    background: rgba(0, 0, 0, 0.35);
+}
+
+/* Efecto de enfoque dorado de alta gama */
+input:focus {
+    border-color: var(--umg-gold);
+    background: rgba(0, 0, 0, 0.45);
+    box-shadow: 0 0 0 3px rgba(197, 157, 95, 0.15);
+}
+
+/* --- BOTÓN CORPORATIVO DORADO --- */
+.btn-login {
+    width: 100%;
+    padding: 15px;
+    background: var(--umg-gold);
+    border: none;
+    border-radius: 8px;
+    color: var(--umg-blue);
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease-in-out;
+    margin-top: 10px;
+    box-shadow: 0 4px 12px rgba(197, 157, 95, 0.2);
+}
+
+.btn-login:hover {
+    background: var(--umg-gold-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(197, 157, 95, 0.3);
+}
+
+.btn-login:active {
+    transform: translateY(0);
+}
+
+/* --- MENSAJES DE ERROR O ADVERTENCIA --- */
+#mensaje {
+    text-align: center;
+    margin-top: 18px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    min-height: 20px;
+    transition: all 0.2s ease;
+}
+
+/* Clases dinámicas que puedes invocar desde tu script.js para pintar el error en el dom */
+.msg-error {
+    color: #fc8181;
+    animation: shake 0.3s ease-in-out;
+}
+
+.msg-success {
+    color: #68d391;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
+}
+
+#toggle-password:hover {
+    opacity: 1 !important;
+    transform: scale(1.1);
+    transition: all 0.15s ease-in-out;
+}

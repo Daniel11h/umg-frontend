@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UMG - Iniciar Sesión</title>
+  <link rel="icon" type="image/png" href="assets/img/UmgLogo.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Contenedor translúcido principal -->
+  <div class="login-container">
+    <div class="login-header">
+        <img src="assets/img/UmgLogo.png" class="logo" alt="Logo UMG">
+        <h2>UNIVERSIDAD MARIANO GÁLVEZ</h2>
+        <p class="subtitle">Plataforma Web de Administración</p>
+    </div>
+
+    <div class="form-group">
+        <label for="correo">Correo Institucional</label>
+        <div class="input-wrapper">
+            <span class="input-icon">✉️</span>
+            <input type="email" id="correo" placeholder="ejemplo@miumg.edu.gt">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="password">Contraseña Segura</label>
+        <div class="input-wrapper">
+            <span class="input-icon">🔒</span>
+            <input type="password" id="password" placeholder="••••••••••••" style="padding-right: 45px;">
+            <!-- NUEVO: Botón interactivo para alternar la visibilidad -->
+            <span id="toggle-password" onclick="togglePasswordVisibility()" style="position: absolute; right: 15px; cursor: pointer; opacity: 0.6; user-select: none;">👁️</span>
+        </div>
+    </div>
+
+
+    <button class="btn-login" onclick="login()">
+        <span>Ingresar de Forma Segura</span> ➔
+    </button>
+
+    <p id="mensaje"></p>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UMG - Historial de Asistencias</title>
+    <link rel="icon" type="image/png" href="assets/img/UmgLogo.png">
+    <link rel="stylesheet" href="registrar.css"> <!-- Reutiliza tus mismos estilos visuales -->
+</head>
+<body>
+
+    <!-- Header / Navbar Superior -->
+    <header class="navbar">
+        <div class="logo-section">
+            <img src="assets/img/UmgLogo.png" alt="Logo UMG" class="logo-img">    
+            <div class="logo-text">
+                <span class="uni-name">UNIVERSIDAD MARIANO GÁLVEZ</span>
+                <span class="uni-sub">DE GUATEMALA</span>
+            </div>
+        </div>
+        <div class="nav-title">
+            <span class="web-text">Web</span> para administradores
+        </div>
+        <div class="user-profile">
+            <div class="user-info">
+                <span class="welcome">Bienvenido,</span>
+                <span id="admin-name" class="user-name">Administrador</span>
+            </div>
+            <div class="avatar-circle" onclick="togglePerfil()" style="cursor: pointer;">👤</div>
+        </div>
+    </header>
+
+    <!-- Contenedor Principal (Sidebar + Contenido Central) -->
+    <div class="app-layout">
+        
+             
+        <aside class="sidebar">
+            <nav class="sidebar-menu">
+                <a href="bienvenido.html" class="menu-link">
+                    <span class="menu-icon">🏠</span> Inicio
+                </a>
+                <a href="registrar_asistencia.html" class="menu-link">
+                    <span class="menu-icon">👤➕</span> Registrar asistencia
+                </a>
+                <a href="historial_asistencias.html" class="menu-link active">
+                    <span class="menu-icon">📄</span> Visualizar historial de asistencias
+                </a>
+                
+                <!-- REPARADO: Agrega id="side-puerta-general" aquí abajo -->
+                <a href="historial_puerta_general.html" class="menu-link" id="side-puerta-general">
+                    <span class="menu-icon">🏫</span> Visualizar historial de ingresos puerta general
+                </a>
+                
+                <!-- REPARADO: Agrega id="side-puerta-salon" aquí abajo -->
+                <a href="historial_puerta_salon.html" class="menu-link" id="side-puerta-salon">
+                    <span class="menu-icon">🚪</span> Visualizar historial de ingresos puerta salon
+                </a>
+            </nav>
+        </aside>
+
+
+        
+        <main class="main-workspace">
+            <div class="workspace-header">
+                <h2>📄 Visualizar historial de asistencias</h2>
+            </div>
+
+            <!-- Barra de Filtros Superiores Históricos -->
+            <section class="filters-card">
+                <div class="filter-group">
+                    <label>Carreras Asignadas</label>
+                    <select id="filtro-carrera">
+                        <!-- Se llena dinámicamente -->
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Curso</label>
+                    <select id="filtro-curso">
+                        <!-- Se llena dinámicamente -->
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Sección</label>
+                    <select id="filtro-seccion">
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Buscar Fecha Pasada</label>
+                    
+                    <input type="date" id="filtro-fecha">
+                </div>
+                <button class="btn-consultar">🔍 Consultar Historial</button>
+            </section>
+
+            <!-- Tabla de Alumnos en Modo Solo Lectura -->
+            <section class="table-container">
+                <table class="asistencia-table">
+                    <thead>
+                        <tr>
+                            <th>Foto</th>
+                            <th>Nombre completo</th>
+                            <th>Carnet</th>
+                            <th>Tipo</th>
+                            <th>Hora de ingreso</th>
+                            <th>Asistencia Asentada</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="6" style="text-align:center; padding:40px; color:#718096; font-style:italic;">
+                                Seleccione la fecha histórica que desea auditar y presione Consultar Historial.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+
+    <!-- VENTANA MODAL FLOTANTE DE PERFIL -->
+    <div id="modal-perfil" class="modal-overlay" onclick="togglePerfil()">
+        <div class="profile-card" onclick="event.stopPropagation()">
+            <div class="profile-header">
+                <div class="profile-avatar">👤</div>
+                <h3 id="perf-titulo-nombre">Cargando...</h3>
+                <span id="perf-rol-tag" class="role-tag">Rol</span>
+            </div>
+            <div class="profile-body">
+                <div class="info-group">
+                    <label>Nombre Completo:</label>
+                    <p id="perf-nombre">Cargando...</p>
+                </div>
+                <div class="info-group">
+                    <label>Carnet:</label>
+                    <p id="perf-carnet">Cargando...</p>
+                </div>
+                <div class="info-group">
+                    <label>Correo Institucional:</label>
+                    <p id="perf-correo">Cargando...</p>
+                </div>
+                <div class="info-group">
+                    <label>Rol asignado:</label>
+                    <p id="perf-rol">Cargando...</p>
+                </div>
+            </div>
+            <div class="profile-footer">
+                <button class="btn-logout" onclick="cerrarSesion()">❌ Cerrar Sesión Segura</button>
+            </div>
+        </div>
+    </div>
+
+    
+    <script>
+        
+         const API_BASE = "https://web-production-1fe10d.up.railway.app";
+
+        let mapaCursos = {};
+
+        document.addEventListener("DOMContentLoaded", function() {
+           
+            const correo = localStorage.getItem("usuarioCorreo");
+            let rol = localStorage.getItem("usuarioRol") || localStorage.getItem("rol");
+
+            if (!correo || !rol) {
+                window.location.href = "index.html"; 
+                return;
+            }
+
+           
+            const nombreLimpio = correo.split('@')[0].replace(/\./g, ' ');
+            document.getElementById('admin-name').textContent = nombreLimpio.charAt(0).toUpperCase() + nombreLimpio.slice(1);
+
+            
+            const sidePuertaGeneral = document.getElementById("side-puerta-general");
+            const sidePuertaSalon = document.getElementById("side-puerta-salon");
+            
+            if (rol === "Catedratico") {
+                if (sidePuertaGeneral) sidePuertaGeneral.style.display = "none";
+                if (sidePuertaSalon) sidePuertaSalon.style.display = "none";
+            }
+
+            
+            cargarDatosExtendidosPerfil(correo);
+            cargarFiltrosDocente(correo);
+
+           const fechaGuatemala = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'America/Guatemala',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+}).format(new Date());
+
+document.getElementById("filtro-fecha").value = fechaGuatemala;
+
+            
+            document.querySelector(".btn-consultar").addEventListener("click", consultarHistorialPasado);
+        });
+
+        
+        function cargarFiltrosDocente(correoUsuario) {
+            let rolUsuario = localStorage.getItem("usuarioRol") || localStorage.getItem("rol");
+            if (!rolUsuario || rolUsuario === "undefined") {
+                rolUsuario = "Catedratico";
+            }
+
+            fetch(`${API_BASE}/auth/asistencia/filtros?correo=${correoUsuario}&rol=${rolUsuario}`)
+                .then(res => res.json())
+                .then(data => {
+                    const selectCarrera = document.getElementById("filtro-carrera");
+                    const selectCurso = document.getElementById("filtro-curso");
+                    
+                    if (!selectCarrera || !selectCurso) return;
+
+                    selectCarrera.innerHTML = "";
+                    selectCurso.innerHTML = "";
+                    mapaCursos = {};
+
+                    if (data.modo === "Catedratico") {
+                       
+                        selectCarrera.onchange = null; 
+                        
+                        const option = document.createElement("option");
+                        option.value = data.carrera;
+                        option.textContent = data.carrera;
+                        selectCarrera.appendChild(option);
+
+                        if (data.cursos && data.cursos.length > 0) {
+                            data.cursos.forEach(curso => {
+                                const optCurso = document.createElement("option");
+                                optCurso.value = curso.id_curso !== undefined ? curso.id_curso : curso.ID_CURSO;
+                                optCurso.textContent = curso.nombre !== undefined ? curso.nombre : curso.NOMBRE;
+                                selectCurso.appendChild(optCurso);
+                                mapaCursos[optCurso.value] = optCurso.textContent;
+                            });
+                        } else {
+                            selectCurso.innerHTML = "<option value=''>⚠️ Sin cursos asignados hoy</option>";
+                        }
+                    } else {
+                        
+                        selectCarrera.innerHTML = "<option value=''>-- Seleccione Carrera --</option>";
+                        selectCurso.innerHTML = "<option value=''>-- Seleccione un Curso --</option>";
+
+                        if (data.carreras) {
+                            data.carreras.forEach(c => {
+                                const option = document.createElement("option");
+                                option.value = c.id_carrera !== undefined ? c.id_carrera : c.ID_CARRERA;
+                                option.textContent = c.nombre_carrera !== undefined ? c.nombre_carrera : c.NOMBRE_CARRERA;
+                                selectCarrera.appendChild(option);
+                            });
+                        }
+
+                        
+                        selectCarrera.onchange = function() {
+                            const idCarreraSeleccionada = this.value;
+                            if (!idCarreraSeleccionada) {
+                                selectCurso.innerHTML = "<option value=''>-- Seleccione un Curso --</option>";
+                                return;
+                            }
+                            
+                            selectCurso.innerHTML = "<option value=''>⏳ Cargando materias...</option>";
+                            
+                            fetch(`${API_BASE}/auth/asistencia/filtros/cursos-global?idCarrera=${idCarreraSeleccionada}`)
+                                .then(r => r.json())
+                                .then(cursosGlobales => {
+                                    selectCurso.innerHTML = "";
+                                    if (cursosGlobales.length === 0) {
+                                        selectCurso.innerHTML = "<option value=''>⚠️ Sin cursos en esta carrera</option>";
+                                        return;
+                                    }
+                                    cursosGlobales.forEach(cg => {
+                                        const optCg = document.createElement("option");
+                                        optCg.value = cg.id_curso !== undefined ? cg.id_curso : cg.ID_CURSO;
+                                        optCg.textContent = cg.nombre !== undefined ? cg.nombre : cg.NOMBRE;
+                                        selectCurso.appendChild(optCg);
+                                        mapaCursos[optCg.value] = optCg.textContent;
+                                    });
+                                })
+                                .catch(e => {
+                                    console.error("Error en cascada global histórica:", e);
+                                    selectCurso.innerHTML = "<option value=''>❌ Error al sincronizar materias</option>";
+                                });
+                        };
+                    }
+                })
+                .catch(err => {
+                    console.error("Error al cargar filtros históricos:", err);
+                    const sc = document.getElementById("filtro-carrera");
+                    if (sc) sc.innerHTML = "<option>Error de carga</option>";
+                });
+        }
+
+        
+        function consultarHistorialPasado() {
+            const selectCarreraElement = document.getElementById("filtro-carrera");
+            const carrera = selectCarreraElement.options[selectCarreraElement.selectedIndex].text;
+            const idCurso = document.getElementById("filtro-curso").value;
+            const seccion = document.getElementById("filtro-seccion").value;
+            const fecha = document.getElementById("filtro-fecha").value;
+            const tbody = document.querySelector(".asistencia-table tbody");
+
+            if (!idCurso || idCurso === "") {
+                alert("Por favor seleccione un curso válido.");
+                return;
+            }
+
+            tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:30px; color:blue;">🔍 Buscando registros históricos</td></tr>`;
+
+            fetch(`${API_BASE}/auth/asistencia/historial?idCurso=${idCurso}&seccion=${seccion}&fecha=${fecha}&carrera=${encodeURIComponent(carrera)}`)
+                .then(res => res.json())
+                .then(alumnos => {
+                    tbody.innerHTML = ""; 
+
+                    if (alumnos.length === 0) {
+                        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:40px; color:#9b2c2c; font-weight:bold; font-style:italic;">⚠️ No se encontró ninguna asistencia guardada para este curso, sección y fecha en Railway.</td></tr>`;
+                        return;
+                    }
+
+                    alumnos.forEach(al => {
+                        const tr = document.createElement("tr");
+                        const estadoGuardado = al.asistencia_guardada !== undefined ? al.asistencia_guardada : al.asistenciaGuardada;
+
+                        let claseEstado = "status-ausente";
+                        if (estadoGuardado === "Presente") claseEstado = "status-presente";
+                        else if (estadoGuardado === "Tarde") claseEstado = "status-tarde";
+
+                        let srcFoto = al.foto_base64 ? al.foto_base64 : 'assets/img/default-avatar.png';
+
+if (srcFoto && srcFoto.startsWith("data:") && !srcFoto.includes(";base64,")) {
+    srcFoto = "data:image/jpeg;base64," + srcFoto;
+} else if (srcFoto && !srcFoto.startsWith("data:") && !srcFoto.startsWith("http")) {
+    srcFoto = "data:image/jpeg;base64," + srcFoto;
+}
+
+                        tr.innerHTML = `
+                            <td>
+                                <img src="${srcFoto}" alt="Foto Alumno" class="student-photo-img" onerror="this.src='assets/img/default-avatar.png'">
+                            </td>
+                            <td class="text-bold">${al.nombre} ${al.apellido}</td>
+                            <td class="text-muted">${al.carnet}</td>
+                            <td><span class="badge badge-student">${al.tipo_persona || 'Estudiante'}</span></td>
+                            <td class="hora-col">${al.hora_ingreso || '--:--:--'}</td>
+                            <td>
+                                <select class="status-select ${claseEstado}" disabled style="cursor: not-allowed; opacity: 0.8;">
+                                    <option value="Presente" ${estadoGuardado === 'Presente' ? 'selected' : ''}>🟢 Presente</option>
+                                    <option value="Tarde" ${estadoGuardado === 'Tarde' ? 'selected' : ''}>🟡 Tarde</option>
+                                    <option value="Ausente" ${estadoGuardado === 'Ausente' ? 'selected' : ''}>🔴 Ausente</option>
+                                </select>
+                            </td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                })
+                .catch(err => {
+                    console.error("Error al consultar historial:", err);
+                    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:30px; color:red;">❌ Error de comunicación con el servidor.</td></tr>`;
+                });
+        }
+        function cargarDatosExtendidosPerfil(correoUsuario) {
+            fetch(`${API_BASE}/auth/perfil?correo=${correoUsuario}`)
+                .then(res => res.json())
+                .then(data => {
+                    if(!data.error) {
+                        document.getElementById("perf-titulo-nombre").textContent = data.nombre;
+                        document.getElementById("perf-nombre").textContent = data.nombre;
+                        document.getElementById("perf-carnet").textContent = data.carnet;
+                        document.getElementById("perf-correo").textContent = data.correo;
+                        document.getElementById("perf-rol").textContent = data.rol;
+                        document.getElementById("perf-rol-tag").textContent = data.rol.toUpperCase();
+
+                        
+                        if (data.foto_perfil_base64 && data.foto_perfil_base64 !== "") {
+                            const avatarCirculo = document.querySelector(".avatar-circle");
+                            if (avatarCirculo) {
+                                avatarCirculo.innerHTML = `<img src="${data.foto_perfil_base64}" style="border-radius: 50%; object-fit: cover; width: 100%; height: 100%;">`;
+                            }
+
+                            const perfilAvatar = document.querySelector(".profile-avatar");
+                            if (perfilAvatar) {
+                                perfilAvatar.innerHTML = `<img src="${data.foto_perfil_base64}" style="border-radius: 50%; object-fit: cover; width: 100%; height: 100%;">`;
+                            }
+                        }
+                    }
+                })
+                .catch(err => console.error("Error cargando perfil extendido:", err));
+        }
+
+
+        function togglePerfil() {
+            document.getElementById("modal-perfil").classList.toggle("open");
+        }
+
+        function cerrarSesion() {
+            localStorage.clear();
+            window.location.href = "index.html";
+        }
+    </script>
+</body>
+</html>

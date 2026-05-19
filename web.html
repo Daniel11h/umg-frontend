@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UMG - Verificación Facial</title>
+  <link rel="icon" type="image/png" href="assets/img/UmgLogo.png">
+  <link rel="stylesheet" href="style-face.css">
+</head>
+<body>
+
+  <!-- Audios del Sistema (Se mantienen idénticos) -->
+  <audio id="scannerSound" loop><source src="assets/sounds/scanner.mp3" type="audio/mpeg"></audio>
+  <audio id="grantedSound"><source src="assets/sounds/granted.mp3" type="audio/mpeg"></audio>
+  <audio id="deniedSound"><source src="assets/sounds/Denied.mp3" type="audio/mpeg"></audio>
+
+  <!-- Contenedor Premium Glassmorphism -->
+  <div class="container">
+    <div class="header-section">
+        <img src="assets/img/UmgLogo.png" class="logo" alt="Logo UMG">
+        <h2>VERIFICACIÓN BIOMÉTRICA</h2>
+        <p class="subtitle">Escaneo de Rostro Institucional</p>
+    </div>
+
+    <!-- Caja de video estilizada como radar holográfico -->
+    <div class="video-box">
+      <div class="scanner-overlay">
+          <!-- Esquinas decorativas de enfoque estilo cámara de seguridad -->
+          <div class="corner top-left"></div>
+          <div class="corner top-right"></div>
+          <div class="corner bottom-left"></div>
+          <div class="corner bottom-right"></div>
+          
+          <video id="video" autoplay></video>
+          <!-- Línea del escáner láser animada -->
+          <div class="scanner"></div>
+      </div>
+    </div>
+
+    <!-- Botón estilizado tecnológico -->
+    <button class="btn-verify" onclick="capturar()">
+        <span>Verificar Identidad Digital</span> 👤⚡
+    </button>
+
+    <p id="mensaje">Inicializando interfaz de video...</p>
+    <!-- NUEVO: Botón interactivo para regresar a la pantalla de acceso -->
+    <button class="btn-back" onclick="window.location.href='index.html'">
+        ⬅️ Regresar al Login
+    </button>
+  </div>
+
+  <script>
+    
+  
+    const API = "https://web-production-1fe10d.up.railway.app";
+
+   
+
+    const video = document.getElementById("video");
+
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(stream => {
+        video.srcObject = stream;
+        let sonido = document.getElementById("scannerSound");
+        sonido.volume = 0.5;
+        sonido.play();
+        document.getElementById("mensaje").textContent = "Cámara lista. Posicione su rostro frente a la pantalla.";
+      })
+      .catch(error => {
+        document.getElementById("mensaje").textContent = "No se pudo acceder a la cámara";
+      });
+
+    async function capturar() {
+        const video = document.getElementById("video");
+        const mensaje = document.getElementById("mensaje");
+        const scanner = document.getElementById("scannerSound");
+        const granted = document.getElementById("grantedSound");
+        const denied = document.getElementById("deniedSound");
+
+        const canvas = document.createElement("canvas");
+        canvas.width = 320;
+        canvas.height = 240;
+
+        const ctx = canvas.getContext("2d"); 
+        
+       
+        ctx.translate(320, 0);
+        ctx.scale(-1, 1);
+        
+        ctx.drawImage(video, 0, 0, 320, 240); 
+        
+        // Elevamos un poco la calidad a 0.45 para mayor nitidez de píxeles
+        const fotoBase64 = canvas.toDataURL("image/jpeg", 0.45);
+
+        const correoUsuario = localStorage.getItem("usuarioCorreo");
+
+        mensaje.style.color = "#4299e1";
+        mensaje.textContent = "⚙️ Procesando patrones biométricos...";
+
+        try {
+
+            const response = await fetch(`${API}/auth/verificar-biometria`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    correo: correoUsuario,
+                    foto_base64: fotoBase64
+                })
+            });
+
+            const textoResultado = await response.text();
+
+            if (textoResultado === "Acceso concedido") {
+
+                scanner.pause();
+
+                granted.currentTime = 0;
+                granted.play();
+
+                mensaje.style.color = "#48bb78";
+                mensaje.textContent = "🟢 Rostro verificado. Validando credenciales académicas...";
+
+                fetch(`${API}/auth/rol?correo=${correoUsuario}`)
+                    .then(resRol => resRol.text())
+                    .then(rol => {
+
+                        if (
+                            rol === "Admin" ||
+                            rol === "Administrativo" ||
+                            rol === "Catedratico"
+                        ) {
+
+                            localStorage.setItem("usuarioRol", rol);
+
+                            setTimeout(() => {
+                                window.location.href = "bienvenido.html";
+                            }, 2500);
+
+                        } else {
+
+                            granted.pause();
+                            granted.currentTime = 0;
+
+                            localStorage.clear();
+
+                            denied.volume = 0.5;
+                            denied.play();
+
+                            mensaje.style.color = "#f56565";
+                            mensaje.textContent = "🔴 Acceso Denegado: Usuario sin privilegios válidos.";
+
+                            setTimeout(() => {
+                                window.location.href = "index.html";
+                            }, 4000);
+                        }
+                    })
+
+                    .catch(err => {
+
+                        granted.pause();
+                        granted.currentTime = 0;
+
+                        localStorage.clear();
+
+                        denied.volume = 0.5;
+                        denied.play();
+
+                        mensaje.style.color = "#f56565";
+                        mensaje.textContent = "❌ Error de comunicación con el servidor.";
+
+                        setTimeout(() => {
+                            window.location.href = "index.html";
+                        }, 4000);
+
+                    });
+
+            } else {
+
+                scanner.pause();
+
+                denied.volume = 0.5;
+                denied.play();
+
+                mensaje.style.color = "#f56565";
+                mensaje.textContent = "⚠️ Error: " + textoResultado;
+
+                setTimeout(() => {
+                    mensaje.textContent = "Posicione su rostro frente a la cámara";
+                    mensaje.style.color = "white";
+                    scanner.play();
+                }, 4000);
+            }
+
+        } catch (error) {
+
+    console.error(error);
+
+    scanner.pause();
+
+    denied.volume = 0.5;
+    denied.play();
+
+    mensaje.style.color = "#f56565";
+    mensaje.textContent = "❌ Error real: " + error;
+
+}
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,196 @@
+/* --- PALETA DE COLORES HOLOGRÁFICOS UMG --- */
+:root {
+    --bg-gradient: linear-gradient(135deg, #000c1a 0%, #001933 50%, #002344 100%);
+    --umg-blue: #002344;
+    --umg-gold: #c59d5f;
+    --umg-gold-hover: #b3894b;
+    --laser-color: #00f2fe;
+    --laser-shadow: rgba(0, 242, 254, 0.5);
+    --text-white: #ffffff;
+    --glass-bg: rgba(255, 255, 255, 0.03);
+    --glass-border: rgba(255, 255, 255, 0.06);
+}
+
+/* --- CONFIGURACIÓN ESTRUCTURAL GENERAL --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Roboto, sans-serif;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    background: var(--bg-gradient);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* --- CONTENEDOR CENTRAL DE BIOMETRÍA --- */
+.container {
+    width: 100%;
+    max-width: 460px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 35px 30px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    animation: scaleUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes scaleUp {
+    from { transform: scale(0.95); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.header-section {
+    margin-bottom: 25px;
+}
+
+.logo {
+    width: 70px;
+    height: auto;
+    margin-bottom: 12px;
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.4));
+}
+
+h2 {
+    color: var(--text-white);
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+}
+
+.subtitle {
+    color: var(--umg-gold);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+/* --- MARCO DE ENFOQUE CIRCULAR DE LA CÁMARA (EL RADAR) --- */
+.video-box {
+    width: 280px;
+    height: 280px;
+    margin: 0 auto 30px auto;
+    position: relative;
+    border-radius: 50%; /* Hace el marco circular */
+    border: 2px dashed rgba(255, 255, 255, 0.15);
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.2);
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.6);
+}
+
+.scanner-overlay {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    border-radius: 50%;
+    overflow: hidden; /* Corta el video cuadrado de la webcam para dejarlo circular */
+}
+
+video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Evita que la imagen de la cámara se estire o deforme */
+    transform: scaleX(-1); /* Efecto espejo nativo para comodidad del usuario */
+}
+
+/* --- LÁSER EN MOVIMIENTO VERTICAL DE ALTA VELOCIDAD --- */
+/* --- CORREGIDO: Animación calibrada para que baje y suba de forma fluida dentro del círculo --- */
+.scanner {
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(to right, transparent, var(--laser-color), transparent);
+    position: absolute;
+    top: 0;
+    left: 0;
+    box-shadow: 0 0 12px 3px var(--laser-shadow);
+    animation: scanAnimation 2s ease-in-out infinite; /* Cambiado a ease-in-out para mayor suavidad */
+}
+
+@keyframes scanAnimation {
+    0% { top: 2%; }
+    50% { top: 96%; } /* Se detiene justo antes del borde inferior para evitar el corte abrupto */
+    100% { top: 2%; }
+}
+
+/* --- NUEVO: Estilo elegante para el botón de regresar --- */
+.btn-back {
+    display: inline-block;
+    margin-top: 25px;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    text-decoration: none;
+    letter-spacing: 0.5px;
+}
+
+.btn-back:hover {
+    color: var(--umg-gold);
+    transform: translateX(-3px); /* Pequeño desplazamiento hacia la izquierda al pasar el mouse */
+}
+
+
+/* Esquinas de enfoque holográficas */
+.corner {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    border: 2px solid var(--umg-gold);
+    z-index: 10;
+    opacity: 0.6;
+}
+.top-left { top: 15px; left: 15px; border-right: none; border-bottom: none; }
+.top-right { top: 15px; right: 15px; border-left: none; border-bottom: none; }
+.bottom-left { bottom: 15px; left: 15px; border-right: none; border-top: none; }
+.bottom-right { bottom: 15px; right: 15px; border-left: none; border-top: none; }
+
+/* --- BOTÓN CORPORATIVO INTERACTIVO --- */
+.btn-verify {
+    width: 100%;
+    padding: 15px;
+    background: transparent;
+    border: 2px solid var(--umg-gold);
+    border-radius: 8px;
+    color: var(--umg-gold);
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.25s ease-in-out;
+    text-transform: uppercase;
+}
+
+.btn-verify:hover {
+    background: var(--umg-gold);
+    color: var(--umg-blue);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(197, 157, 95, 0.25);
+}
+
+.btn-verify:active {
+    transform: translateY(0);
+}
+
+/* --- RECUADRO DE MENSAJE DINÁMICO --- */
+#mensaje {
+    margin-top: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #ffffff;
+    min-height: 24px;
+    letter-spacing: 0.3px;
+    transition: color 0.2s ease;
+}

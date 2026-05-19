@@ -1,0 +1,174 @@
+:root {
+    --umg-blue: #002344;
+    --umg-blue-light: #003666;
+    --umg-gold: #c59d5f;
+    --bg-workspace: #f4f6f9;
+    --border-color: #e2e8f0;
+}
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background-color: var(--bg-workspace);
+    overflow-x: hidden;
+}
+
+/* --- REUTILIZACIÓN NAVBAR SUPERIOR --- */
+.navbar {
+    background-color: var(--umg-blue);
+    color: white;
+    padding: 10px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 3px solid var(--umg-gold);
+    height: 60px;
+}
+.logo-section { display: flex; align-items: center; gap: 12px; }
+.logo-img { height: 50px; }
+.logo-text { border-left: 1.5px solid rgba(255,255,255,0.3); padding-left: 10px; line-height: 1.2; color: white; }
+.uni-name { display: block; font-weight: bold; font-size: 0.85rem; }
+.uni-sub { display: block; font-size: 0.65rem; opacity: 0.8; }
+.web-text { color: var(--umg-gold); font-size: 1.6rem; font-family: 'Georgia', serif; font-style: italic; }
+.user-profile { display: flex; align-items: center; gap: 15px; }
+.avatar-circle { background: rgba(255,255,255,0.2); width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+
+/* --- DISEÑO DEL MAQUETADO (LAYOUT) --- */
+.app-layout {
+    display: flex;
+    min-height: calc(100vh - 83px);
+}
+
+/* SIDEBAR IZQUIERDO */
+.sidebar {
+    width: 260px;
+    background-color: var(--umg-blue);
+    padding-top: 20px;
+    border-right: 1px solid rgba(255,255,255,0.1);
+}
+.sidebar-menu { display: flex; flex-direction: column; }
+.menu-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: rgba(255,255,255,0.7);
+    padding: 15px 25px;
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: 0.2s;
+}
+.menu-link:hover, .menu-link.active {
+    color: white;
+    background-color: var(--umg-blue-light);
+    border-left: 4px solid var(--umg-gold);
+}
+
+/* ÁREA DE TRABAJO CENTRAL */
+.main-workspace {
+    flex: 1;
+    padding: 30px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+.workspace-header h2 { margin: 0; color: var(--umg-blue); font-size: 1.6rem; }
+
+/* FILTROS SUPERIORES */
+.filters-card {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 20px;
+}
+.filter-group { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 150px; }
+.filter-group label { font-size: 0.85rem; font-weight: 700; color: #4a5568; }
+.filter-group select, .filter-group input {
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 0.9rem;
+    color: #2d3748;
+    outline: none;
+    background-color: #fff;
+}
+.btn-consultar {
+    background-color: var(--umg-blue);
+    color: white;
+    border: none;
+    padding: 11px 25px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: 0.2s;
+}
+.btn-consultar:hover { background-color: var(--umg-blue-light); }
+
+/* TABLA DE ASISTENCIAS */
+.table-container {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    overflow: hidden;
+}
+.asistencia-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.95rem; }
+.asistencia-table th { background-color: #f8fafc; padding: 15px; color: #4a5568; font-weight: 700; border-bottom: 2px solid var(--border-color); }
+.asistencia-table td { padding: 15px; border-bottom: 1px solid var(--border-color); color: #2d3748; vertical-align: middle; }
+
+.student-photo { width: 35px; height: 35px; background-color: #e2e8f0; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+.text-bold { font-weight: 600; }
+.text-muted { color: #718096; }
+
+/* BADGES Y SELECTORES DE ESTADO */
+.badge { padding: 4px 10px; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-student { background-color: #ebf8ff; color: #2b6cb0; }
+
+.status-select { padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); font-weight: 600; font-size: 0.9rem; width: 150px; outline: none; }
+.status-presente { color: #2f855a; background-color: #f0fff4; }
+.status-tarde { color: #c05621; background-color: #fffaf0; }
+.status-ausente { color: #9b2c2c; background-color: #fff5f5; }
+
+/* BOTÓN INFERIOR GUARDAR */
+.workspace-footer { display: flex; justify-content: center; margin-top: 15px; }
+.btn-submit {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 14px 40px;
+    border-radius: 6px;
+    font-size: 1.05rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(40,167,69,0.2);
+    transition: 0.2s;
+}
+.btn-submit:hover { background-color: #218838; transform: translateY(-2px); }
+
+/* --- REUTILIZACIÓN MODAL PERFIL --- */
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 2000; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: 0.3s; }
+.modal-overlay.open { opacity: 1; pointer-events: auto; }
+.profile-card { background: white; width: 380px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.25); overflow: hidden; transform: scale(0.8); opacity: 0; transition: 0.3s; }
+.modal-overlay.open .profile-card { transform: scale(1); opacity: 1; }
+.profile-header { background: linear-gradient(135deg, #002344 0%, #003d7a 100%); color: white; padding: 25px; text-align: center; border-bottom: 4px solid var(--umg-gold); }
+.role-tag { background-color: var(--umg-gold); color: #002344; font-size: 0.75rem; font-weight: bold; padding: 4px 12px; border-radius: 20px; display: inline-block; }
+.profile-body { padding: 25px; }
+.info-group { margin-bottom: 15px; border-bottom: 1px solid #f0f0f0; padding-bottom: 8px; }
+.info-group label { font-size: 0.75rem; font-weight: bold; color: #888; display: block; }
+.info-group p { margin: 0; font-size: 0.95rem; color: #111; font-weight: 500; }
+.btn-logout { width: 100%; background-color: #dc3545; color: white; border: none; padding: 12px; font-weight: bold; border-radius: 6px; cursor: pointer; }
+
+.student-photo-img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--border-color);
+    display: block;
+    margin: 0 auto;
+}
+

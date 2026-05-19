@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UMG - Panel de Administrador</title>
+    <link rel="icon" type="image/png" href="assets/img/UmgLogo.png">
+    <link rel="stylesheet" href="bienvenido.css">
+</head>
+<body>
+
+    <!-- Header / Navbar -->
+    <header class="navbar">
+        <div class="logo-section">
+            <img src="assets/img/UmgLogo.png" alt="Logo UMG" class="logo-img">    
+            <div class="logo-text">
+                <span class="uni-name">UNIVERSIDAD MARIANO GÁLVEZ</span>
+                <span class="uni-sub">DE GUATEMALA</span>
+            </div>
+        </div>
+        
+        <div class="nav-title">
+            <span class="web-text">Web</span> para administradores
+        </div>
+
+        <div class="user-profile">
+            <div class="user-info">
+                <span class="welcome">Bienvenido,</span>
+                <span id="admin-name" class="user-name">Administrador</span>
+            </div>
+            <!-- CORREGIDO: Ahora llama a togglePerfil() para desplegar la ventana emergente -->
+            <div class="avatar-circle" onclick="togglePerfil()" style="cursor: pointer;" title="Ver Perfil">👤</div>
+        </div>
+    </header>
+
+    <!-- Slider Section -->
+    <section class="slider-container">
+        <!-- Flechas de navegación -->
+        <button class="prev" onclick="moveSlide(-1)">❮</button>
+        <button class="next" onclick="moveSlide(1)">❯</button>
+
+               <!-- CON_TENEDOR DE SLIDES CORREGIDO Y CERRADO -->
+        <div class="slides" id="slides-container">
+            <!-- Slide 1 (Habilitado para todos) -->
+            <div class="slide active" data-type="compartido">
+                <div class="slide-content">
+                    <h1>¿Cómo registramos la asistencia de clase desde Web administradores?</h1>
+                    <p>Utiliza nuestra plataforma biométrica para llevar un control exacto y automatizado.</p>
+                    <button class="btn-more" onclick="abrirTutorial('tut-registro')">Mostrar más información</button>
+                </div>
+                <div class="slide-image">
+                    <img src="assets/img/aistenciafondo.jpg" alt="Vista previa del sistema">
+                </div>
+            </div>
+
+            <!-- Slide 2 (Habilitado para todos) -->
+            <div class="slide" data-type="compartido">
+                <div class="slide-content">
+                    <h1>¿Cómo visualizamos el historial de asistencias guardadas?</h1>
+                    <p>Obtén documentos detallados de cada curso de forma inmediata.</p>
+                    <button class="btn-more" onclick="abrirTutorial('tut-historial')">Mostrar más información</button>
+                </div>
+                <div class="slide-image">
+                    <img src="assets/img/fondoPDF.jpg" alt="Vista previa del sistema">
+                </div>
+            </div>
+
+            <!-- Slide 3 (Exclusivo Admin / Administrativo) -->
+            <div class="slide" data-type="restringido">
+                <div class="slide-content">
+                    <h1>¿Cómo visualizamos dashboard de asistencia por salón de clase?</h1>
+                    <p>Analiza estadísticas visuales del comportamiento por aula.</p>
+                    <button class="btn-more" onclick="abrirTutorial('tut-puertas')">Mostrar más información</button>
+                </div>
+                <div class="slide-image">
+                    <img src="assets/img/puertaSalonfondo.jpg" alt="Vista previa del sistema">
+                </div>
+            </div>
+
+            <!-- Slide 4 (Exclusivo Admin / Administrativo) -->
+            <div class="slide" data-type="restringido">
+                <div class="slide-content">
+                    <h1>¿Cómo visualizamos dashboard de asistencia por entrada general?</h1>
+                    <p>Controla el flujo total de personas en los accesos principales.</p>
+                    <button class="btn-more" onclick="abrirTutorial('tut-puertas')">Mostrar más información</button>
+                </div>
+                <div class="slide-image">
+                    <img src="assets/img/dashPuertaPrincipalfondo.jpg" alt="Vista previa del sistema">
+                </div>
+            </div>
+        </div> <!-- Cierre del contenedor principal slides-container -->
+
+
+    <!-- VENTANA MODAL FLOTANTE DEL MANUAL DE USUARIO CENTRALIZADO -->
+    <div id="modal-tutorial" class="modal-overlay" onclick="cerrarTutorial()">
+        <div class="tutorial-card" onclick="event.stopPropagation()">
+            <div class="tutorial-header">
+                <span class="tutorial-badge">Manual de Usuario</span>
+                <h3>📖 Guía Rápida de Herramientas Biométricas</h3>
+                <p>Aprenda a administrar el control de asistencia y accesos del campus</p>
+                <button class="btn-close-tutorial" onclick="cerrarTutorial()">✕</button>
+            </div>
+
+            <div class="tutorial-tabs">
+                <button id="btn-tab-tut-registro" class="tab-link active" onclick="cambiarPestaña(event, 'tut-registro')">👤➕ Tomar Asistencia</button>
+                <button id="btn-tab-tut-historial" class="tab-link" onclick="cambiarPestaña(event, 'tut-historial')">📄 Historial de Clases</button>
+                <button id="btn-tab-tut-puertas" class="tab-link" onclick="cambiarPestaña(event, 'tut-puertas')">🏫 Control de Puertas</button>
+            </div>
+
+                        <!-- CUERPO DEL TUTORIAL REFORMATEADO PARA ALINEACIÓN VERTICAL PERFECTA -->
+            <div class="tutorial-body">
+                
+                <!-- Pestaña 1: Registro de Asistencia -->
+                <div id="tut-registro" class="tab-content active">
+                    <h4>🟢 Cómo registrar la asistencia diaria de sus cursos:</h4>
+                    <ul class="steps-list">
+                        <li>
+                            <span>1</span>
+                            <table style="width:100%; border-collapse:collapse; margin:0; padding:0;">
+                                <tr>
+                                    <td style="width:160px; font-weight:700; color:#ffffff; vertical-align:top; padding:0 10px 0 0;">Carga Inicial:</td>
+                                    <td style="color:rgba(255,255,255,0.85); vertical-align:top; padding:0; text-align:left;">La plataforma detecta su carrera asignada automáticamente al entrar. La pantalla inicia vacía para mayor orden.</td>
+                                </tr>
+                            </table>
+                        </li>
+                        <li>
+                            <span>2</span>
+                            <table style="width:100%; border-collapse:collapse; margin:0; padding:0;">
+                                <tr>
+                                    <td style="width:160px; font-weight:700; color:#ffffff; vertical-align:top; padding:0 10px 0 0;">Selección de Cursos:</td>
+                                    <td style="color:rgba(255,255,255,0.85); vertical-align:top; padding:0; text-align:left;">Despliegue el selector superior y elija la materia y sección que le corresponde evaluar hoy.</td>
+                                </tr>
+                            </table>
+                        </li>
+                        <li>
+                            <span>3</span>
+                            <table style="width:100%; border-collapse:collapse; margin:0; padding:0;">
+                                <tr>
+                                    <td style="width:160px; font-weight:700; color:#ffffff; vertical-align:top; padding:0 10px 0 0;">Consultar:</td>
+                                    <td style="color:rgba(255,255,255,0.85); vertical-align:top; padding:0; text-align:left;">El sistema leerá los rostros captados por las cámaras en el aula, marcando en verde a los presentes automáticamente.</td>
+                                </tr>
+                            </table>
+                        </li>
+                        <li>
+                            <span>4</span>
+                            <table style="width:100%; border-collapse:collapse; margin:0; padding:0;">
+                                <tr>
+                                    <td style="width:160px; font-weight:700; color:#ffffff; vertical-align:top; padding:0 10px 0 0;">Auditoría Manual:</td>
+                                    <td style="color:rgba(255,255,255,0.85); vertical-align:top; padding:0; text-align:left;">El docente puede ajustar el selector de cualquier alumno manualmente según lo que observa en el salón real.</td>
+                                </tr>
+                            </table>
+                        </li>
+                        <li>
+                            <span>5</span>
+                            <table style="width:100%; border-collapse:collapse; margin:0; padding:0;">
+                                <tr>
+                                    <td style="width:160px; font-weight:700; color:#ffffff; vertical-align:top; padding:0 10px 0 0;">Firma Criptográfica:</td>
+                                    <td style="color:rgba(255,255,255,0.85); vertical-align:top; padding:0; text-align:left;">Presione guardar. El sistema aplicará una Firma Electrónica Avanzada, enviará el PDF oficial firmado directo a su correo institucional y bloqueará la pantalla para evitar fraudes.</td>
+                                </tr>
+                            </table>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Pestaña 2: Historial de Asistencias -->
+                <div id="tut-historial" class="tab-content">
+                    <h4>📄 Cómo auditar clases archivadas del pasado:</h4>
+                    <ul class="steps-list">
+                        <li>
+                            <span>1</span>
+                            <table style="width:100%; border-collapse:collapse; margin:0; padding:0;">
+                                <tr>
+                                    <td style="width:160px; font-weight:700; color:#ffffff; vertical-align:top; padding:0 10px 0 0;">Acceso al Archivo:</td>
+                                    <td style="color:rgba(255,255,255,0.85); vertical-align:top; padding:0; text-align:left;">Ingrese desde el menú lateral izquierdo a la sección de <i>"Visualizar historial de asistencias"</i>.</td>
+                                </tr>
+                            </table>
+                        </li>
+                        <li>
+                            <span>2</span>
+                            <table style="width:100%; border-collapse:collapse; margin:0; padding:0;">
+                                <tr>
+                                    <td style="width:160px; font-weight:700; color:#ffffff; vertical-align:top; padding:0 10px 0 0;">Calendario Libre:</td>
+                                    <td style="color:rgba(255,255,255,0.85); vertical-align:top; padding:0; text-align:left;">A diferencia de la pantalla diaria, aquí el calendario está desbloqueado para que elija cualquier día del pasado.</td>
+                                </tr>
+                            </table>
+                        </li>
+                        <li>
+                            <span>3</span>
+                            <table style="width:100%; border-collapse:collapse; margin:0; padding:0;">
+                                <tr>
+                                    <td style="width:160px; font-weight:700; color:#ffffff; vertical-align:top; padding:0 10px 0 0;">Modo Solo Lectura:</td>
+                                    <td style="color:rgba(255,255,255,0.85); vertical-align:top; padding:0; text-align:left;">Presione consultar. El sistema jalará el espejo exacto de lo guardado ese día. Los combos aparecerán bloqueados en gris para garantizar que las bitácoras ya firmadas no se alteren de forma ilegal.</td>
+                                </tr>
+                            </table>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Pestaña 3: Historial de Puertas -->
+                <div id="tut-puertas" class="tab-content">
+                    <h4>🏫 Cómo monitorear la afluencia perimetral del campus:</h4>
+                    <ul class="steps-list">
+                        <li>
+                            <span>1</span>
+                            <table style="width:100%; border-collapse:collapse; margin:0; padding:0;">
+                                <tr>
+                                    <td style="width:160px; font-weight:700; color:#ffffff; vertical-align:top; padding:0 10px 0 0;">Filtro de Edificios:</td>
+                                    <td style="color:rgba(255,255,255,0.85); vertical-align:top; padding:0; text-align:left;">Seleccione la instalación o el aula física específica que desea auditar desde los selectores del menú.</td>
+                                </tr>
+                            </table>
+                        </li>
+                        <li>
+                            <span>2</span>
+                            <table style="width:100%; border-collapse:collapse; margin:0; padding:0;">
+                                <tr>
+                                    <td style="width:160px; font-weight:700; color:#ffffff; vertical-align:top; padding:0 10px 0 0;">Árbol de Fechas:</td>
+                                    <td style="color:rgba(255,255,255,0.85); vertical-align:top; padding:0; text-align:left;">El sistema agrupará las bitácoras mostrando las fechas como tarjetas colapsables para no ordenar de forma tosca los registros.</td>
+                                </tr>
+                            </table>
+                        </li>
+                        <li>
+                            <span>3</span>
+                            <table style="width:100%; border-collapse:collapse; margin:0; padding:0;">
+                                <tr>
+                                    <td style="width:160px; font-weight:700; color:#ffffff; vertical-align:top; padding:0 10px 0 0;">Despliegue de Roles:</td>
+                                    <td style="color:rgba(255,255,255,0.85); vertical-align:top; padding:0; text-align:left;">Haga clic sobre una fecha para expandir el nodo. El sistema decodificará las fotos en tiempo real y clasificará a los ingresantes bajo 6 roles cromáticos.</td>
+                                </tr>
+                            </table>
+                        </li>
+                        
+                    </ul>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+        <!-- Indicadores (Puntitos) -->
+        <div class="dots-container" id="dots-container">
+            <!-- Los puntitos se generarán dinámicamente con JavaScript -->
+        </div>
+    </section>
+
+    <!-- Sección Herramientas -->
+    <main class="main-content">
+        <h2 class="tools-title">Herramientas</h2>
+        <div class="tools-grid">
+            <!-- Herramienta 1 (Habilitada para todos) -->
+           <!-- Herramienta 1 (Habilitada para todos) - ESTRUCTURA CORREGIDA -->
+           <div class="tool-item" id="tool-registrar" onclick="window.location.href='registrar_asistencia.html'">
+           <div class="tool-icon bg-blue">📝</div>
+           <span>Registrar Asistencia</span>
+           </div>
+            <!-- Herramienta 2 (Habilitada para todos) -->
+            <div class="tool-item" id="tool-historial" onclick="window.location.href= 'historial_asistencias.html'">
+                <div class="tool-icon bg-green">📄</div>
+                <span>Visualizar historial de Asistencias</span>
+            </div>
+            <!-- Herramienta 3 (Oculta para Catedrático) -->
+            <div class="tool-item" id="tool-puerta" onclick=" window.location.href= 'historial_puerta_general.html'">
+                <div class="tool-icon bg-purple">🏫</div>
+                <span>Historial de ingresos por puerta Principal</span>
+            </div>
+            <!-- Herramienta 4 (Oculta para Catedrático) -->
+            <div class="tool-item" id="tool-salon" onclick="window.location.href= 'historial_puerta_salon.html'">
+                <div class="tool-icon bg-orange">🚪</div>
+                <span>Historial de ingresos por puerta Salón</span>
+            </div>
+        </div>
+    </main>
+   
+    <!-- NUEVA VENTANA MODAL FLOTANTE DE PERFIL -->
+    <div id="modal-perfil" class="modal-overlay" onclick="togglePerfil()">
+        <div class="profile-card" onclick="event.stopPropagation()">
+            <div class="profile-header">
+                <div class="profile-avatar">👤</div>
+                <h3 id="perf-titulo-nombre">Cargando...</h3>
+                <span id="perf-rol-tag" class="role-tag">Rol</span>
+            </div>
+            <div class="profile-body">
+                <div class="info-group">
+                    <label>Nombre Completo:</label>
+                    <p id="perf-nombre">Cargando...</p>
+                </div>
+                <div class="info-group">
+                    <label>Carnet:</label>
+                    <p id="perf-carnet">Cargando...</p>
+                </div>
+                <div class="info-group">
+                    <label>Correo Institucional:</label>
+                    <p id="perf-correo">Cargando...</p>
+                </div>
+                <div class="info-group">
+                    <label>Rol asignado:</label>
+                    <p id="perf-rol">Cargando...</p>
+                </div>
+            </div>
+            <div class="profile-footer">
+                <button class="btn-logout" onclick="cerrarSesion()">
+                    ❌ Cerrar Sesión Segura
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+
+
+<script>
+        
+        const API = "https://web-production-1fe10d.up.railway.app";
+
+        let slideIndex = 0;
+        let slides = [];
+        let dots = [];
+
+        document.addEventListener("DOMContentLoaded", function() {
+            
+            const correo = localStorage.getItem("usuarioCorreo");
+            const rol = localStorage.getItem("usuarioRol");
+
+            if (!correo || !rol) {
+                alert("Acceso denegado. Debe iniciar sesión y verificar su identidad.");
+                window.location.href = "index.html"; 
+                return;
+            }
+
+          
+            const nombre = correo.split('@')[0].replace('.', ' ');
+            document.getElementById('admin-name').textContent = nombre.charAt(0).toUpperCase() + nombre.slice(1);
+
+            
+            cargarDatosExtendidosPerfil(correo);
+
+            
+            if (rol === "Catedratico") {
+                
+                document.getElementById("tool-puerta").style.display = "none";
+                document.getElementById("tool-salon").style.display = "none";
+
+                
+                const slidesRestringidos = document.querySelectorAll('.slide[data-type="restringido"]');
+                slidesRestringidos.forEach(slide => slide.remove());
+            }
+
+            
+            initSlider();
+        });
+
+        function initSlider() {
+            slides = document.querySelectorAll('.slide');
+            const dotsContainer = document.getElementById('dots-container');
+            dotsContainer.innerHTML = '';
+
+            
+            slides.forEach((_, index) => {
+                const dot = document.createElement('span');
+                dot.classList.add('dot');
+
+                if (index === 0) dot.classList.add('active');
+
+                dot.onclick = () => currentSlide(index);
+
+                dotsContainer.appendChild(dot);
+            });
+
+            dots = document.querySelectorAll('.dot');
+
+            if(slides.length > 0) {
+                showSlide(0);
+            }
+        }
+
+        function showSlide(n) {
+
+            if (slides.length === 0) return;
+
+            if (n >= slides.length) slideIndex = 0;
+            if (n < 0) slideIndex = slides.length - 1;
+
+            slides.forEach(s => s.classList.remove('active'));
+
+            if(dots.length > 0) {
+                dots.forEach(d => d.classList.remove('active'));
+            }
+
+            //Línea completada con éxito para evitar errores de sintaxis
+            slides[slideIndex].classList.add('active');
+
+            if(dots[slideIndex]) {
+                dots[slideIndex].classList.add('active');
+            }
+        }
+
+        function moveSlide(n) {
+            slideIndex += n;
+            showSlide(slideIndex);
+        }
+
+        function currentSlide(n) {
+            slideIndex = n;
+            showSlide(slideIndex);
+        }
+
+        
+        function cargarDatosExtendidosPerfil(correoUsuario) {
+
+            fetch(`${API}/auth/perfil?correo=${correoUsuario}`)
+                .then(res => res.json())
+                .then(data => {
+
+                    if(!data.error) {
+
+                        // 1. Llenamos los campos de texto tradicionales
+                        document.getElementById("perf-titulo-nombre").textContent = data.nombre;
+                        document.getElementById("perf-nombre").textContent = data.nombre;
+                        document.getElementById("perf-carnet").textContent = data.carnet;
+                        document.getElementById("perf-correo").textContent = data.correo;
+                        document.getElementById("perf-rol").textContent = data.rol;
+                        document.getElementById("perf-rol-tag").textContent = data.rol.toUpperCase();
+
+                        // 2. NUEVO: Si el usuario tiene una foto real en la base de datos, reemplazamos los emogis por etiquetas IMG
+                        if (data.foto_perfil_base64 && data.foto_perfil_base64 !== "") {
+
+                            
+                            const avatarCirculo = document.querySelector(".avatar-circle");
+
+                            if (avatarCirculo) {
+                                avatarCirculo.innerHTML = `<img src="${data.foto_perfil_base64}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block;">`;
+                            }
+
+                            const perfilAvatar = document.querySelector(".profile-avatar");
+
+                            if (perfilAvatar) {
+                                perfilAvatar.innerHTML = `<img src="${data.foto_perfil_base64}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block;">`;
+                            }
+                        }
+                    }
+                })
+                .catch(err => console.error("Error cargando perfil extendido:", err));
+        }
+
+        
+        function togglePerfil() {
+
+            const modal = document.getElementById("modal-perfil");
+
+            if(modal.classList.contains("open")) {
+                modal.classList.remove("open");
+            } else {
+                modal.classList.add("open");
+            }
+        }
+
+    
+        function cerrarSesion() {
+            localStorage.clear();
+            window.location.href = "index.html";
+        }
+
+        
+        function abrirTutorial(idPestañaDeseada) {
+
+          
+            const contenidos = document.getElementsByClassName("tab-content");
+
+            for (let i = 0; i < contenidos.length; i++) {
+                contenidos[i].classList.remove("active");
+            }
+
+           
+            const enlaces = document.getElementsByClassName("tab-link");
+
+            for (let i = 0; i < enlaces.length; i++) {
+                enlaces[i].classList.remove("active");
+            }
+
+        
+            document.getElementById(idPestañaDeseada).classList.add("active");
+           
+            document.getElementById("btn-tab-" + idPestañaDeseada).classList.add("active");
+
+            document.getElementById("modal-tutorial").classList.add("open");
+        }
+
+        function cerrarTutorial() {
+            document.getElementById("modal-tutorial").classList.remove("open");
+        }
+
+        
+        function cambiarPestaña(evt, nombrePestaña) {
+
+            const contenidos = document.getElementsByClassName("tab-content");
+
+            for (let i = 0; i < contenidos.length; i++) {
+                contenidos[i].classList.remove("active");
+            }
+
+            const enlaces = document.getElementsByClassName("tab-link");
+
+            for (let i = 0; i < enlaces.length; i++) {
+                enlaces[i].classList.remove("active");
+            }
+
+            document.getElementById(nombrePestaña).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+
+</script>
+
+</body>
+</html>

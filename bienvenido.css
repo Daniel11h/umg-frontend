@@ -1,0 +1,475 @@
+:root {
+    --umg-blue: #002344;
+    --umg-gold: #c59d5f;
+    --light-gray: #f8f9fa;
+    --text-color: #333;
+}
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background-color: white;
+    color: var(--text-color);
+    overflow-x: hidden;
+}
+
+/* --- NAVBAR --- */
+.navbar {
+    background-color: var(--umg-blue);
+    color: white;
+    padding: 10px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 3px solid var(--umg-gold);
+}
+
+.logo-section { display: flex; align-items: center; gap: 12px; }
+.logo-img { height: 60px; width: auto; } 
+
+.logo-text { border-left: 1.5px solid rgba(255,255,255,0.3); padding-left: 10px; line-height: 1.2; }
+.logo-text .uni-name { display: block; font-weight: bold; font-size: 0.9rem; }
+.logo-text .uni-sub { display: block; font-size: 0.7rem; opacity: 0.8; }
+
+.web-text { color: var(--umg-gold); font-size: 1.6rem; font-family: 'Georgia', serif; font-style: italic; }
+
+.user-profile { display: flex; align-items: center; gap: 15px; }
+.avatar-circle { background: rgba(255,255,255,0.2); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+
+/* --- SLIDER --- */
+.slider-container {
+    position: relative;
+    background-color: var(--umg-blue);
+    color: white;
+    height: 450px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+}
+
+.slides { width: 100%; height: 100%; }
+
+.slide {
+    display: none; 
+    padding: 0 100px;
+    height: 100%;
+    align-items: center;
+    justify-content: space-between;
+    animation: fade 0.6s ease-in-out;
+}
+
+.slide.active { display: flex; }
+
+@keyframes fade {
+    from { opacity: 0.4; } 
+    to { opacity: 1; }
+}
+
+.slide-content { max-width: 50%; }
+.slide-content h1 { font-size: 2.2rem; margin-bottom: 20px; line-height: 1.2; }
+.slide-content p { font-size: 1.1rem; opacity: 0.9; margin-bottom: 30px; }
+
+.btn-more {
+    background-color: white;
+    color: var(--umg-blue);
+    padding: 12px 25px;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.btn-more:hover { background-color: var(--umg-gold); color: white; }
+
+.slide-image img { width: 450px; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3)); }
+
+/* Flechas */
+.prev, .next {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 20px;
+    color: white;
+    font-weight: bold;
+    font-size: 30px;
+    background: transparent;
+    border: none;
+    z-index: 10;
+    transition: 0.3s;
+}
+.next { right: 10px; }
+.prev { left: 10px; }
+.prev:hover, .next:hover { color: var(--umg-gold); scale: 1.2; }
+
+/* Puntitos */
+.dots-container { position: absolute; bottom: 20px; width: 100%; text-align: center; }
+.dot {
+    cursor: pointer;
+    height: 12px; width: 12px;
+    margin: 0 5px;
+    background-color: rgba(255,255,255,0.3);
+    border-radius: 50%;
+    display: inline-block;
+    transition: 0.3s;
+}
+.dot.active { background-color: var(--umg-gold); width: 30px; border-radius: 10px; }
+
+/* --- SECCIÓN HERRAMIENTAS --- */
+.main-content { padding: 60px 100px; text-align: center; }
+.tools-title { font-size: 2rem; color: var(--umg-blue); margin-bottom: 50px; font-weight: bold; }
+
+.tools-grid {
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.tool-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 200px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.tool-item:hover { transform: translateY(-10px); }
+
+.tool-icon { 
+    width: 80px; height: 80px; 
+    border-radius: 50%; 
+    color: white; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+}
+
+.bg-blue { background-color: #0056b3; }
+.bg-green { background-color: #28a745; }
+.bg-purple { background-color: #6f42c1; }
+.bg-orange { background-color: #fd7e14; }
+
+.tool-item span { 
+    font-size: 0.95rem; 
+    font-weight: 600; 
+    color: var(--umg-blue); 
+    line-height: 1.3;
+}
+
+/* --- NUEVOS ESTILOS: VENTANA MODAL DE PERFIL FLOTANTE --- */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); 
+    z-index: 2000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* Abre el modal de forma suave */
+.modal-overlay.open {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.profile-card {
+    background: white;
+    width: 380px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+    transform: scale(0.8);
+    opacity: 0;
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+.modal-overlay.open .profile-card {
+    transform: scale(1);
+    opacity: 1;
+}
+
+.profile-header {
+    background: linear-gradient(135deg, #002344 0%, #003d7a 100%);
+    color: white;
+    padding: 25px;
+    text-align: center;
+    border-bottom: 4px solid var(--umg-gold);
+}
+
+.profile-avatar {
+    font-size: 3rem;
+    background: rgba(255, 255, 255, 0.2);
+    width: 70px; height: 70px;
+    border-radius: 50%;
+    margin: 0 auto 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-header h3 { margin: 0 0 5px 0; font-size: 1.3rem; font-weight: 600; }
+
+.role-tag {
+    background-color: var(--umg-gold);
+    color: #002344;
+    font-size: 0.75rem;
+    font-weight: bold;
+    padding: 4px 12px;
+    border-radius: 20px;
+    display: inline-block;
+}
+
+.profile-body { padding: 25px; }
+
+.info-group {
+    margin-bottom: 15px;
+    text-align: left;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 8px;
+}
+
+.info-group:last-child { border: none; margin: 0; padding: 0; }
+
+.info-group label {
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: #888;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 2px;
+}
+
+.info-group p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #111;
+    font-weight: 500;
+}
+
+.profile-footer {
+    padding: 15px 25px 25px;
+    background: #fdfdfd;
+}
+
+.btn-logout {
+    width: 100%;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 12px;
+    font-size: 0.95rem;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+}
+
+.btn-logout:hover { background-color: #bd2130; }
+.btn-logout:active { transform: scale(0.98); }
+
+/* ======================================================= */
+/*   ESTILOS PREMIUM PARA EL MODAL DEL MANUAL DE USUARIO   */
+/* ======================================================= */
+.tutorial-card {
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    width: 100%;
+    max-width: 680px;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+    color: #ffffff;
+    overflow: hidden;
+    animation: slideUpTutorial 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUpTutorial {
+    from { transform: translateY(30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.tutorial-header {
+    background: rgba(0, 35, 68, 0.4);
+    padding: 25px 30px;
+    position: relative;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    text-align: left;
+}
+
+.tutorial-badge {
+    background: #c59d5f; /* Dorado UMG */
+    color: #002344;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    display: inline-block;
+    margin-bottom: 8px;
+}
+
+.tutorial-header h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: #ffffff;
+}
+
+.tutorial-header p {
+    color: rgba(255,255,255,0.6);
+    font-size: 0.85rem;
+}
+
+.btn-close-tutorial {
+    position: absolute;
+    top: 25px;
+    right: 30px;
+    background: transparent;
+    border: none;
+    color: rgba(255,255,255,0.5);
+    font-size: 1.3rem;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.btn-close-tutorial:hover { color: #fc8181; }
+
+/* Menú de pestañas horizontales */
+.tutorial-tabs {
+    display: flex;
+    background: rgba(0,0,0,0.15);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.tab-link {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 15px;
+    color: rgba(255,255,255,0.6);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-bottom: 3px solid transparent;
+}
+.tab-link:hover {
+    color: #ffffff;
+    background: rgba(255,255,255,0.02);
+}
+.tab-link.active {
+    color: #c59d5f;
+    border-bottom-color: #c59d5f;
+    background: rgba(255,255,255,0.04);
+}
+
+.tutorial-body {
+    padding: 30px;
+    max-height: 400px;
+    overflow-y: auto;
+    text-align: left;
+}
+
+/* Scrollbar estilizada para la caja de texto */
+.tutorial-body::-webkit-scrollbar {
+    width: 6px;
+}
+.tutorial-body::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.1);
+    border-radius: 10px;
+}
+
+.tab-content {
+    display: none;
+}
+.tab-content.active {
+    display: block;
+    animation: fadeInTab 0.3s ease;
+}
+
+@keyframes fadeInTab {
+    from { opacity: 0; } to { opacity: 1; }
+}
+
+.tutorial-body h4 {
+    color: #c59d5f;
+    font-size: 1.05rem;
+    margin-bottom: 18px;
+    font-weight: 700;
+}
+
+/* ======================================================= */
+/*    CORRECCIÓN DE ALINEACIÓN RECTA PARA LA LISTA DE PASOS */
+/* ======================================================= */
+
+/* Contenedor principal de la lista */
+.steps-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Espacio uniforme entre cada paso */
+    padding: 0;
+    margin: 0;
+}
+
+/* Cada fila (paso) de la lista */
+.steps-list li {
+    display: flex;
+    align-items: flex-start; /* Alinea todo al borde superior de la fila */
+    gap: 15px; /* Espacio controlado entre el número y el contenido */
+    width: 100%;
+}
+
+/* Columna 1: El círculo con el número */
+.steps-list li span {
+    background: rgba(255, 255, 255, 0.1);
+    color: #c59d5f; /* Dorado UMG */
+    font-weight: 700;
+    min-width: 28px; /* Ancho fijo para que no se deforme el círculo */
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.85rem;
+    flex-shrink: 0; /* Evita que el círculo se comprima */
+}
+
+/* Contenedor interno del texto (Título + Descripción) */
+.steps-list li .step-text-container {
+    display: grid;
+    grid-template-columns: 140px 1fr; /* COLUMNA FIJA: 140px para el título, el resto para el texto */
+    gap: 20px; /* Espacio exacto entre el título y donde empieza la descripción */
+    width: 100%;
+    align-items: transform;
+}
+
+/* Columna 2: El título en negrita del paso */
+.steps-list li b {
+    color: #ffffff;
+    font-size: 0.95rem;
+    font-weight: 700;
+    display: inline-block;
+    white-space: normal; /* Permite que el título baje de renglón si es muy largo */
+    text-align: left;
+}
+
+/* Columna 3: La descripción larga */
+.steps-list li .step-description {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    text-align: left;
+    margin: 0;
+}
+
