@@ -54,6 +54,50 @@
   
     const API = "https://web-production-1fe10d.up.railway.app";
 
+    window.addEventListener("DOMContentLoaded", () => {
+    const params = new URLSearchParams(window.location.search);
+    const desktopToken = params.get("desktopToken");
+    const mensaje = document.getElementById("mensaje");
+
+    if (!desktopToken) return;
+
+    if (mensaje) {
+        mensaje.style.color = "#4299e1";
+        mensaje.textContent = "Validando acceso seguro desde aplicación de escritorio...";
+    }
+
+    fetch(`${API}/auth/desktop-validar`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            token: desktopToken
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.status === "ok") {
+            localStorage.setItem("usuarioCorreo", data.correo);
+            localStorage.setItem("usuarioRol", data.rol);
+
+            window.history.replaceState({}, document.title, window.location.pathname);
+
+            window.location.href = "bienvenido.html";
+        } else {
+            localStorage.clear();
+            mensaje.style.color = "#f56565";
+            mensaje.textContent = data.error || "Acceso desde escritorio inválido.";
+        }
+    })
+    .catch(error => {
+        console.error("ERROR DESKTOP TOKEN:", error);
+        localStorage.clear();
+        mensaje.style.color = "#f56565";
+        mensaje.textContent = "No se pudo validar el acceso desde escritorio.";
+    });
+});
+
    
 
     const video = document.getElementById("video");
