@@ -127,21 +127,18 @@
         const granted = document.getElementById("grantedSound");
         const denied = document.getElementById("deniedSound");
 
-    const canvas = document.createElement("canvas");
-     canvas.width = 400;
-     canvas.height = 300;
+        const canvas = document.createElement("canvas");
+canvas.width = 320;
+canvas.height = 240;
 
-     const ctx = canvas.getContext("2d");
+const ctx = canvas.getContext("2d");
 
-     ctx.translate(400, 0);
-     ctx.scale(-1, 1);
+ctx.translate(320, 0);
+ctx.scale(-1, 1);
 
-     // suave, sin quemar la cara
-     ctx.filter = "brightness(1.08) contrast(1.08)";
+ctx.drawImage(video, 0, 0, 320, 240);
 
-     ctx.drawImage(video, 0, 0, 400, 300);
-
-     const fotoBase64 = canvas.toDataURL("image/jpeg", 0.72);
+const fotoBase64 = canvas.toDataURL("image/jpeg", 0.78);
 
         const correoUsuario = localStorage.getItem("usuarioCorreo");
 
