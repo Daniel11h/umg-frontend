@@ -122,19 +122,19 @@
         const denied = document.getElementById("deniedSound");
 
         const canvas = document.createElement("canvas");
-        canvas.width = 320;
-        canvas.height = 240;
+        canvas.width = 480;
+        canvas.height = 360;
 
         const ctx = canvas.getContext("2d"); 
         
        
-        ctx.translate(320, 0);
+        ctx.translate(480, 0);
         ctx.scale(-1, 1);
         
-        ctx.drawImage(video, 0, 0, 320, 240); 
+        ctx.drawImage(video, 0, 0, 480, 360); 
         
         // Elevamos un poco la calidad a 0.45 para mayor nitidez de píxeles
-        const fotoBase64 = canvas.toDataURL("image/jpeg", 0.45);
+        const fotoBase64 = canvas.toDataURL("image/jpeg", 0.75);
 
         const correoUsuario = localStorage.getItem("usuarioCorreo");
 
